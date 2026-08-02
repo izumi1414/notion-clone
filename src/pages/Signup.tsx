@@ -1,6 +1,17 @@
+import { useState } from 'react';
 import '../styles/pages/auth.css';
+import { authRepository } from '../modules/auth/auth.repository';
 
 export default function Signup() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const signup = async () => {
+    const { user, token } = await authRepository.signup(name, email, password);
+    console.log(user, token);
+  };
+
   return (
     <div className='auth-container'>
       <div className='auth-wrapper'>
@@ -14,7 +25,8 @@ export default function Signup() {
                 </label>
                 <div className='auth-input-container'>
                   <input
-                    onChange={() => {}}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     id='username'
                     name='username'
                     placeholder='ユーザー名'
@@ -30,7 +42,8 @@ export default function Signup() {
                 </label>
                 <div className='auth-input-container'>
                   <input
-                    onChange={() => {}}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     id='email'
                     name='email'
                     placeholder='メールアドレス'
@@ -46,7 +59,8 @@ export default function Signup() {
                 </label>
                 <div className='auth-input-container'>
                   <input
-                    onChange={() => {}}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     id='password'
                     name='password'
                     placeholder='パスワード'
@@ -58,7 +72,8 @@ export default function Signup() {
               </div>
               <div>
                 <button
-                  onClick={() => {}}
+                  disabled={!name || !email || !password}
+                  onClick={signup}
                   className='home-button'
                   style={{ width: '100%' }}
                 >
