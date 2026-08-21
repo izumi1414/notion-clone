@@ -5,7 +5,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
 import { currentUserAtom } from './modules/auth/current-user.state';
 import { useNoteStore } from './modules/notes/notes.state';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { noteRepository } from './modules/notes/note.repository';
 
 export default function Layout() {
@@ -13,9 +13,14 @@ export default function Layout() {
   const [isLoading, setIsLoading] = useState(false);
   const noteStore = useNoteStore();
 
+  useEffect(() => {
+    fetchNotes();
+  }, [])
+
   const fetchNotes = async () => {
     setIsLoading(true);
     const notes = await noteRepository.find();
+    console.log(notes);
     noteStore.set(notes);
     setIsLoading(false);
   }
