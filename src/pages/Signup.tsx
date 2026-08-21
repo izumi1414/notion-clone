@@ -1,16 +1,34 @@
 import { useState } from 'react';
 import '../styles/pages/auth.css';
 import { authRepository } from '../modules/auth/auth.repository';
+import { useAtom } from 'jotai';
+import { currentUserAtom } from '../modules/auth/current-user.state';
+import { Navigate } from 'react-router-dom';
 
 export default function Signup() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [currentUser, setCurrentUser] = useAtom(currentUserAtom);
+  const [isSubmitting, setIsSubmiting] = useState(false);
 
   const signup = async () => {
-    const { user, token } = await authRepository.signup(name, email, password);
-    console.log(user, token);
+    setIsSubmiting(true);
+
+    try {
+      const { user, token } = await authRepository.signup(name, email, password);
+      setCurrentUser(user);
+      localStorage.setItem('token', token)
+    } catch (error) {
+      console.error(error);
+      alert('ユーザー登録に失敗しました')
+    } finally {
+      setIsSubmiting(false);
+    }
+
   };
+
+  if (currentUser) return <Navigate to="/" replace />
 
   return (
     <div className='auth-container'>
@@ -72,7 +90,7 @@ export default function Signup() {
               </div>
               <div>
                 <button
-                  disabled={!name || !email || !password}
+                  disabled={!name || !email || !password || isSubmitting}
                   onClick={signup}
                   className='home-button'
                   style={{ width: '100%' }}
