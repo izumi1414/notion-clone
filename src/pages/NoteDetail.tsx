@@ -4,14 +4,14 @@ import '../styles/pages/note-detail.css';
 import { useEffect, useState } from 'react';
 import { useNoteStore } from '../modules/notes/notes.state';
 import { noteRepository } from '../modules/notes/note.repository';
-import { BsFillSignDoNotEnterFill } from 'react-icons/bs';
 
 export default function NoteDetail() {
   const params = useParams();
   const id = parseInt(params.id!);
   const [isLoading, setIsLoading] = useState(false);
   const noteStore = useNoteStore();
-  const note = noteStore.getOne(id)
+  const note = noteStore.getOne(id);
+  console.log(note);
 
   useEffect(() => {
     fetchOne();
@@ -24,10 +24,13 @@ export default function NoteDetail() {
     setIsLoading(false);
   }
 
+  if (isLoading) return <div />;
+  if (!note) return <div>Note is not existed.</div>
+
   return (
     <div className="note-detail-container">
       <div className="note-detail-content">
-        <TitleInput />
+        <TitleInput initialData={note}/>
       </div>
     </div>
   );

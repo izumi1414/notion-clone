@@ -24,9 +24,10 @@ interface Props {
   onExpand: (e: React.MouseEvent) => void;
   layer?: number;
   expanded?: boolean;
+  onClick: () => void;
 }
 
-export default function NoteItem({note, onCreate, onExpand, layer = 0, expanded = false}: Props) {
+export default function NoteItem({note, onCreate, onExpand, layer = 0, expanded = false, onClick}: Props) {
   const [isHovered, setIsHovered] = useState(false);
 
   const getIcon = (): IconType => {
@@ -64,7 +65,8 @@ export default function NoteItem({note, onCreate, onExpand, layer = 0, expanded 
       role='button'
       style={{ paddingLeft: `${layer * 12 + 12}px` }}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}>
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={onClick}>
       <Item label={note.title ?? '無題'} icon={getIcon()} trailingItem={menu} onIconClick={onExpand}/>
     </div>
   );
