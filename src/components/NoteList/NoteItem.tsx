@@ -23,13 +23,14 @@ interface Props {
   onCreate: (e: React.MouseEvent) => void;
   onExpand: (e: React.MouseEvent) => void;
   layer?: number;
+  expanded?: boolean;
 }
 
-export default function NoteItem({note, onCreate, onExpand, layer = 0}: Props) {
+export default function NoteItem({note, onCreate, onExpand, layer = 0, expanded = false}: Props) {
   const [isHovered, setIsHovered] = useState(false);
 
   const getIcon = (): IconType => {
-    return isHovered ? FiChevronRight : FiFile;
+    return expanded ? FiChevronDown : isHovered ? FiChevronRight : FiFile;
   }
 
   const menu = (

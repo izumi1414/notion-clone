@@ -2,7 +2,7 @@ import { Note } from './note.entity';
 import api from '../../lib/api';
 
 export const noteRepository = {
-  async find(options: { title?: string; parentId?: number}): Promise<Note[]> {
+  async find(options: { title?: string; parentId?: number} = {}): Promise<Note[]> {
     const result = await api.get('/notes', {
       params: {
         parentId: options?.parentId
