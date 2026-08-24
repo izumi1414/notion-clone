@@ -16,5 +16,9 @@ export const noteRepository = {
       parentId: params.parentId
     })
     return new Note(result.data);
+  },
+  async findOne(id: number): Promise<Note> {
+    const result = await api.get(`/note/${id}`);
+    return new Note(result.data);
   }
 }
