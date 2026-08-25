@@ -19,5 +19,19 @@ export const useNoteStore = () => {
       return Object.values(uniqueNotes);
     })
   }
-  return { getAll, getOne, set }
+  const deleteNote  = (id: number) => {
+    const findchildren = (parentId : number): number[] => {
+      const childrenIds = notes
+        .filter((note) => note.parentId === parentId)
+        .map((child) => child.id);
+      return childrenIds.concat(
+        ...childrenIds.map((childId) => findchildren(childId))
+      )
+    }
+    const childrenIds = findchildren(id);
+    setNotes((oldNotes) => 
+      oldNotes.filter((note) => ![...childrenIds, id].includes(note.id))
+    )
+  }
+  return { getAll, getOne, set, delete: deleteNote }
 }
