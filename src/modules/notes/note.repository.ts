@@ -20,5 +20,9 @@ export const noteRepository = {
   async findOne(id: number): Promise<Note> {
     const result = await api.get(`/notes/${id}`);
     return new Note(result.data);
+  },
+  async update(id: number, note: {title?: string; content?: string}): Promise<Note> {
+    const result = await api.patch(`/notes/${id}`, note);
+    return new Note(result.data);
   }
 }

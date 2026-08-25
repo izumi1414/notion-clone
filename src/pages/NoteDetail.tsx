@@ -24,13 +24,19 @@ export default function NoteDetail() {
     setIsLoading(false);
   }
 
+  const updateNote = async (id: number, note: {title?: string; content?: string}) => {
+    const updatedNote = await noteRepository.update(id, note);
+    noteStore.set([updatedNote]);
+    return updatedNote;
+  }
+
   if (isLoading) return <div />;
   if (!note) return <div>Note is not existed.</div>
 
   return (
     <div className="note-detail-container">
       <div className="note-detail-content">
-        <TitleInput initialData={note}/>
+        <TitleInput initialData={note} onTitleChange={(title) => updateNote(id, { title }) }/>
       </div>
     </div>
   );
