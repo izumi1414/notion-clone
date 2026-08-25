@@ -12,6 +12,7 @@ export default function Layout() {
   const currentUser = useAtomValue(currentUserAtom);
   const [isLoading, setIsLoading] = useState(false);
   const noteStore = useNoteStore();
+  const [isShowModal, setIsShowModal] = useState(false);
 
   useEffect(() => {
     fetchNotes();
@@ -28,11 +29,11 @@ export default function Layout() {
   if (!currentUser) return <Navigate to="/signin" replace />
   return (
     <div className='layout-container'>
-      {!isLoading && <SideBar />}
+      {!isLoading && <SideBar onSearchButtonClick={() => setIsShowModal(true)}/>}
       <main className='layout-main'>
         <Outlet />
       </main>
-      <SearchModal />
+      <SearchModal isOpen={isShowModal} onClose={() => setIsShowModal(false)}/>
     </div>
   );
 }
