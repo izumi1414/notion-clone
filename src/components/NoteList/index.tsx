@@ -44,7 +44,7 @@ export default function NoteList({layer = 0, parentId}: Props) {
   }
 
   const moveToDetail = (noteId: number) => {
-    navigate(`notes/${noteId}`);
+    navigate(`/notes/${noteId}`);
   }
 
   return (

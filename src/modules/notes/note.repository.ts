@@ -2,10 +2,11 @@ import { Note } from './note.entity';
 import api from '../../lib/api';
 
 export const noteRepository = {
-  async find(options: { title?: string; parentId?: number} = {}): Promise<Note[]> {
+  async find(options: { title?: string; parentId?: number; keyword?: string} = {}): Promise<Note[]> {
     const result = await api.get('/notes', {
       params: {
-        parentId: options?.parentId
+        parentId: options?.parentId,
+        keyword: options?.keyword
       }
     });
     return result.data.notes.map((data: Note) => new Note(data));
