@@ -1,73 +1,93 @@
-# React + TypeScript + Vite
+# Notion Clone
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## プロジェクト概要
 
-Currently, two official plugins are available:
+ReactとTypeScriptで構築した、Notion風のノート管理アプリです。ユーザー認証を行ったあと、ノートの作成、編集、検索、削除を行えます。データの取得・更新は別途起動したAPIサーバーと通信します。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 使用技術
 
-## React Compiler
+- React 19
+- TypeScript
+- Vite
+- React Router
+- Jotai
+- BlockNote
+- Axios
+- react-icons
+- ESLint
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 主な機能
 
-## Expanding the ESLint configuration
+- ユーザー登録、ログイン、ログアウト状態の保持
+- ノートの一覧表示と詳細表示
+- ノートの新規作成、タイトル・本文の編集、削除
+- キーワードによるノート検索
+- JWTトークンを利用したAPIリクエストの認証
+- BlockNoteエディターによるリッチテキスト編集
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 使い方
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1. アプリを起動します。
+2. 初回利用時は「登録」からユーザーを作成します。
+3. ログイン後、ホーム画面でノートを作成します。
+4. サイドバーからノートを開き、タイトルや本文を編集します。
+5. サイドバーの検索からキーワードでノートを絞り込みます。
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## セットアップ手順
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 前提条件
+
+- Node.js 18以上
+- npm
+- ノートAPIサーバー 
+https://github.com/kurushiba/notion-clone-api
+
+### インストール
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+プロジェクト直下に `.env` を作成し、APIサーバーのURLを設定します。
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```env
+VITE_API_URL=http://localhost:8888
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+APIサーバーを起動したあと、開発サーバーを起動します。
+
+```bash
+npm run dev
+```
+
+ブラウザで表示されたURL（通常は `http://localhost:5173`）を開いてください。
+
+### その他のコマンド
+
+```bash
+npm run build    # 型チェックと本番ビルド
+npm run lint     # ESLint
+npm run preview  # 本番ビルドのプレビュー
+```
+
+## ディレクトリ構成
+
+```text
+notion-clone/
+├── public/                  # 静的ファイル
+├── src/
+│   ├── components/          # UIコンポーネント、エディター
+│   ├── lib/api/             # Axios設定、認証ヘッダー処理
+│   ├── modules/
+│   │   ├── auth/            # 認証リポジトリ、ログインユーザー状態
+│   │   ├── notes/           # ノートモデル、APIリポジトリ、状態管理
+│   │   └── user/            # ユーザーモデル
+│   ├── pages/               # ホーム、ノート詳細、認証画面
+│   ├── styles/              # 共通・コンポーネント・ページ別CSS
+│   ├── App.tsx              # ルーティングと初期ユーザー取得
+│   ├── Layout.tsx           # 認証後の共通レイアウト
+│   └── main.tsx             # アプリケーションエントリーポイント
+├── .env                     # API URL（要作成）
+├── package.json
+└── vite.config.ts
 ```
