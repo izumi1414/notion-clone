@@ -7,14 +7,23 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import Item from './Item';
+import { currentUserAtom } from '../../modules/auth/current-user.state';
+import { useAtom } from 'jotai';
 
 export default function UserItem() {
+  const [currentUser, setCurrentUser] = useAtom(currentUserAtom);
+
+  const signout = () => {
+    setCurrentUser(undefined);
+    localStorage.removeItem('token');
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className='user-item-trigger' role='button'>
           <div className='user-item-info'>
-            <span className='user-item-name'>ユーザー名 さんのノート</span>
+            <span className='user-item-name'>{currentUser!.name} さんのノート</span>
           </div>
           <FiChevronsLeft className='user-item-chevron' size={16} />
         </div>
@@ -26,16 +35,16 @@ export default function UserItem() {
         forceMount
       >
         <div className='user-item-dropdown-content'>
-          <p className='user-item-email'>メールアドレス</p>
+          <p className='user-item-email'>メールアドレス：{currentUser!.email}</p>
           <div className='user-item-info'>
             <div>
-              <p className='user-item-name-display'>ユーザー名</p>
+              <p className='user-item-name-display'>ユーザー名：{currentUser!.name}</p>
             </div>
           </div>
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem className='user-item-logout'>
-          <Item label='ログアウト' icon={FiLogOut} onClick={() => {}} />
+          <Item label='ログアウト' icon={FiLogOut} onClick={signout} />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

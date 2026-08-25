@@ -33,5 +33,6 @@ export const useNoteStore = () => {
       oldNotes.filter((note) => ![...childrenIds, id].includes(note.id))
     )
   }
-  return { getAll, getOne, set, delete: deleteNote }
+  const clear = () => setNotes([]);
+  return { getAll, getOne, set, delete: deleteNote, clear }
 }
