@@ -25,9 +25,10 @@ interface Props {
   layer?: number;
   expanded?: boolean;
   onClick: () => void;
+  onDelete: (e: React.MouseEvent) => void;
 }
 
-export default function NoteItem({note, onCreate, onExpand, layer = 0, expanded = false, onClick}: Props) {
+export default function NoteItem({note, onCreate, onExpand, layer = 0, expanded = false, onClick, onDelete}: Props) {
   const [isHovered, setIsHovered] = useState(false);
 
   const getIcon = (): IconType => {
@@ -48,7 +49,7 @@ export default function NoteItem({note, onCreate, onExpand, layer = 0, expanded 
           side='right'
           forceMount
         >
-          <DropdownMenuItem onClick={() => {}}>
+          <DropdownMenuItem onClick={onDelete}>
             <FiTrash2 className='note-item-delete-icon' size={16} />
             Delete
           </DropdownMenuItem>

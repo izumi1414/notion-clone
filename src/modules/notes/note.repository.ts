@@ -25,5 +25,9 @@ export const noteRepository = {
   async update(id: number, note: {title?: string; content?: string}): Promise<Note> {
     const result = await api.patch(`/notes/${id}`, note);
     return new Note(result.data);
+  },
+  async delete(id: number): Promise<boolean> {
+    await api.delete(`/notes/${id}`);
+    return true;
   }
 }
