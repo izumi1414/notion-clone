@@ -1,7 +1,7 @@
 import SideBar from './components/SideBar';
 import SearchModal from './components/SearchModal';
 import './styles/layout.css';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
 import { currentUserAtom } from './modules/auth/current-user.state';
 import { useNoteStore } from './modules/notes/notes.state';
@@ -15,6 +15,7 @@ export default function Layout() {
   const noteStore = useNoteStore();
   const [isShowModal, setIsShowModal] = useState(false);
   const [searchResult, setSearchResult] = useState<Note[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchNotes();
@@ -34,6 +35,11 @@ export default function Layout() {
     setSearchResult(notes ?? []);
   }
 
+  const moveToDetail = (noteId: number) => {
+    navigate(`/notes/${noteId}`);
+    setIsShowModal(false);
+  }
+
   if (!currentUser) return <Navigate to="/signin" replace />
   return (
     <div className='layout-container'>
@@ -45,7 +51,8 @@ export default function Layout() {
         isOpen={isShowModal}
         onClose={() => setIsShowModal(false)}
         notes={searchResult}
-        onKeywordChange={serchNotes}/>
+        onKeywordChange={serchNotes}
+        onItemSelect={moveToDetail}/>
     </div>
   );
 }
