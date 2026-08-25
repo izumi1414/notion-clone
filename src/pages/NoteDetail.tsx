@@ -4,6 +4,7 @@ import '../styles/pages/note-detail.css';
 import { useEffect, useState } from 'react';
 import { useNoteStore } from '../modules/notes/notes.state';
 import { noteRepository } from '../modules/notes/note.repository';
+import { Editor } from '../components/Editor';
 
 export default function NoteDetail() {
   const params = useParams();
@@ -37,6 +38,7 @@ export default function NoteDetail() {
     <div className="note-detail-container">
       <div className="note-detail-content">
         <TitleInput initialData={note} onTitleChange={(title) => updateNote(id, { title }) }/>
+        <Editor initialContent={note.content} onChange={(content) => updateNote(id, { content })}/>
       </div>
     </div>
   );
