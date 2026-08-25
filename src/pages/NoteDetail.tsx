@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useNoteStore } from '../modules/notes/notes.state';
 import { noteRepository } from '../modules/notes/note.repository';
 import { Editor } from '../components/Editor';
+import { useDebouncedCallback } from 'use-debounce';
 
 export default function NoteDetail() {
   const params = useParams();
@@ -31,14 +32,16 @@ export default function NoteDetail() {
     return updatedNote;
   }
 
+  const debounced = useDebouncedCallback(updateNote, 500);
+
   if (isLoading) return <div />;
   if (!note) return <div>Note is not existed.</div>
 
   return (
     <div className="note-detail-container">
       <div className="note-detail-content">
-        <TitleInput initialData={note} onTitleChange={(title) => updateNote(id, { title }) }/>
-        <Editor initialContent={note.content} onChange={(content) => updateNote(id, { content })}/>
+        <TitleInput initialData={note} onTitleChange={(title) => debounced(id, { title }) }/>
+        <Editor initialContent={note.content} onChange={(content) => debounced(id, { content })}/>
       </div>
     </div>
   );
